@@ -1,0 +1,13 @@
+{
+  "trusted_domains": {},
+  "blocked_keywords": [
+    "giveaway",
+    "sponsored"
+  ],
+  "preferred_authors": {},
+  "category_bias": {
+    "Tool": 1.0,
+    "Blog/Writeup": 1.0,
+    "News/Advisory": 1.0
+  }
+}

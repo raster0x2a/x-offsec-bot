@@ -1,0 +1,26 @@
+name: Post feedback
+about: Evaluate a collected post (good/noise)
+labels: [feedback]
+body:
+  - type: input
+    id: domain
+    attributes:
+      label: Domain
+      description: Example: example.com
+      placeholder: example.com
+    validations:
+      required: true
+  - type: dropdown
+    id: verdict
+    attributes:
+      label: Verdict
+      options:
+        - good
+        - noise
+    validations:
+      required: true
+  - type: textarea
+    id: note
+    attributes:
+      label: Note
+      description: Optional reason for the verdict

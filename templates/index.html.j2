@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>X OffSec Daily Digest</title>
+    <style>
+      body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 2rem auto; max-width: 1000px; padding: 0 1rem; background: #0b1020; color: #f5f7ff; }
+      .muted { color: #a9b1d6; }
+      .grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+      .card { border: 1px solid #313a6b; border-radius: 12px; padding: 1rem; background: #141a33; }
+      .chip { display: inline-block; font-size: .8rem; padding: .2rem .5rem; border-radius: 999px; background: #23306d; }
+      a { color: #89b4ff; }
+      img { max-width: 100%; border-radius: 8px; margin-top: .5rem; }
+      .meta { font-size: .85rem; }
+    </style>
+  </head>
+  <body>
+    <h1>X OffSec Daily Digest</h1>
+    <p class="muted">Generated: {{ generated_at }} / Date: {{ date_key }}</p>
+
+    <div class="grid">
+      {% for item in items %}
+      <article class="card">
+        <div class="chip">{{ item.category }}</div>
+        <p class="meta muted">{{ item.created_at_jst }} ({{ item.created_at_utc }})</p>
+        {% if item.preview.title %}
+          <h3><a href="{{ (item.external_urls or [''])[0] }}" target="_blank">{{ item.preview.title }}</a></h3>
+        {% else %}
+          <h3><a href="{{ (item.external_urls or [''])[0] }}" target="_blank">{{ (item.external_urls or [''])[0] }}</a></h3>
+        {% endif %}
+        <p class="muted">{{ item.preview.description }}</p>
+        <p>{{ item.summary }}</p>
+        <p class="meta">source: <a href="{{ item.post_url }}" target="_blank">X post</a></p>
+      </article>
+      {% endfor %}
+    </div>
+  </body>
+</html>
