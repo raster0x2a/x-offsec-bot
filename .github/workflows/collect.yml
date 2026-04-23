@@ -1,0 +1,68 @@
+name: collect-offsec-digest
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  collect-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Update feedback rules
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python scripts/feedback_update.py
+
+      - name: Collect
+        env:
+          X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
+        run: python scripts/collect.py --max-results 80
+
+      - name: Normalize
+        run: python scripts/normalize.py
+
+      - name: Dedupe and rank
+        run: python scripts/dedupe_rank.py --top-n 30
+
+      - name: Summarize
+        run: python scripts/summarize.py --max-preview 20
+
+      - name: Build site
+        run: python scripts/build_site.py
+
+      - name: Commit generated files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/daily docs/index.html data/config/feedback_rules.json
+          git diff --cached --quiet || git commit -m "chore: update daily offsec digest"
+          git push
+
+      - name: Create issue on failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Daily digest failed: ${new Date().toISOString().slice(0,10)}`,
+              body: 'Workflow failed. Check Actions logs and rerun.',
+              labels: ['automation', 'digest-failure']
+            })

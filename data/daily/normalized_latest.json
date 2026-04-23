@@ -1,0 +1,29 @@
+{
+  "generated_at": "2026-04-23T13:41:38+00:00",
+  "mode": "mock",
+  "count": 2,
+  "items": [
+    {
+      "post_id": "mock-1",
+      "text": "New AD attack path research with PoC https://example.com/ad-research",
+      "author": "offsec_researcher",
+      "created_at": "2026-04-23T13:41:38+00:00",
+      "post_url": "https://x.com/offsec_researcher/status/mock-1",
+      "external_urls": [
+        "https://example.com/ad-research"
+      ],
+      "source": "x"
+    },
+    {
+      "post_id": "mock-2",
+      "text": "CVE writeup and mitigation notes https://example.org/cve-writeup",
+      "author": "sec_news",
+      "created_at": "2026-04-23T13:41:38+00:00",
+      "post_url": "https://x.com/sec_news/status/mock-2",
+      "external_urls": [
+        "https://example.org/cve-writeup"
+      ],
+      "source": "x"
+    }
+  ]
+}
